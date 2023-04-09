@@ -19,5 +19,7 @@ public class InterfazUsuario {
 		StdDraw.setYscale(0, height);
 		
 		while(!StdDraw.isKeyPressed(KeyEvent.VK_SPACE));
+		Juego battleship = new Juego();
+		battleship.gameLoop();
 	}
 }

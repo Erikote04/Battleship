@@ -1,4 +1,4 @@
-package modelizacion;
+package modelo;
 
 import java.awt.Color;
 
