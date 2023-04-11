@@ -1,7 +1,7 @@
 package modelo;
 
 import java.awt.Color;
-
+import battleship.Constants;
 import utilidades.StdDraw;
 
 public class Tablero {
@@ -21,27 +21,40 @@ public class Tablero {
 				tablero[i][j] = new Casilla(i, j, Casilla.TipoDeCelda.AGUA);
 			}
 		}
-		Casilla barco1 = new Casilla(0, 2, Casilla.TipoDeCelda.BARCO);
-		barco1.estadoCasillaBarco = Barco.EstadoDeLasCasillasDelBarco.OK;
-		tablero[0][2] = barco1;
-		Casilla barco2 = new Casilla(3, 2, Casilla.TipoDeCelda.BARCO);
-		barco2.estadoCasillaBarco = Barco.EstadoDeLasCasillasDelBarco.OK;
-		tablero[3][2] = barco2;
 		return tablero;
 	}
 
 	public void pintarTablero(Casilla[][] tablero) {
+		int ascii = 65;
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
-				if (tablero[i][j].tipo == Casilla.TipoDeCelda.BARCO) {
-					StdDraw.setPenColor(Color.RED);
-					StdDraw.filledSquare(100 + 20 * i, 100 + 20 * j, 10);
-					System.out.println("barco");
-				} else {
-					StdDraw.setPenColor(Color.BLACK);
-					StdDraw.square(100 + 20 * i, 100 + 20 * j, 10);
+				StdDraw.setPenColor(Color.BLACK);
+				StdDraw.square(100 + Constants.MEDIDA_CASILLA * j, 
+							   650 - Constants.MEDIDA_CASILLA * i, 
+							   Constants.MEDIDA_CASILLA / 2);
+				StdDraw.square(Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * j, 
+					           650 - Constants.MEDIDA_CASILLA * i, 
+					           Constants.MEDIDA_CASILLA / 2);
+				if (j==0) { 
+					StdDraw.text(50 + Constants.MEDIDA_CASILLA * j, 
+							     650 - Constants.MEDIDA_CASILLA * i, 
+							     String.valueOf(i+1));
+					StdDraw.text(Constants.MITAD_ANCHO_PANTALLA + 120 + Constants.MEDIDA_CASILLA * j, 
+						         650 - Constants.MEDIDA_CASILLA * i, 
+						         String.valueOf(i+1));
+				}
+				if (i==0) { 
+					StdDraw.text(100 + Constants.MEDIDA_CASILLA * j, 
+							     Constants.COORDENADA_Y_PARA_LETRAS - Constants.MEDIDA_CASILLA * i, 
+							     Character.toString((char)ascii));
+					StdDraw.text(Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * j, 
+						         Constants.COORDENADA_Y_PARA_LETRAS - Constants.MEDIDA_CASILLA * i, 
+						         Character.toString((char)ascii));
+					ascii++;
 				}
 			}
 		}
+		StdDraw.text(Constants.COORDENADA_CENTRAL_X_TABLERO_IZQUIERDO, Constants.COORDENADA_Y_PARA_NOMBRE_TABLEROS, "FLOTA ALIADA");
+		StdDraw.text(Constants.COORDENADA_CENTRAL_X_TABLERO_DERECHO, Constants.COORDENADA_Y_PARA_NOMBRE_TABLEROS, "FLOTA ENEMIGA");
 	}
 }
