@@ -13,4 +13,7 @@ public class Constants {
 	public static final int COORDENADA_Y_PARA_LETRAS = 690;
 	public static final int COORDENADA_Y_PARA_NOMBRE_TABLEROS = 725;
 	
+	public static final int COORDENADA_Y_CONSOLA = 80;
+	public static final int ANCHO_CONSOLA = 645;
+	public static final int ALTO_CONSOLA = 70;
 }

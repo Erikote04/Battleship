@@ -9,12 +9,13 @@ import utilidades.StdDraw;
 public class Juego {
 	
 	public void gameLoop() {
-		System.out.println("Game started");
+		Console consola = new Console();
 		Tablero tablero = new Tablero(10,10);
 		Casilla[][] casillas = tablero.generarTablero();		
 		StdDraw.enableDoubleBuffering();
 		for(;;) {
 			StdDraw.clear();
+			consola.pintarConsola();
 			tablero.pintarTablero(casillas);
 			StdDraw.show();
 			StdDraw.pause(100);
