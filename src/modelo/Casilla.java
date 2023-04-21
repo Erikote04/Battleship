@@ -12,6 +12,7 @@ public class Casilla {
 	}
 	public TipoDeCelda tipo;
 	public EstadoDeLasCasillasDelBarco estadoCasillaBarco;
+	public Barco barco = null;
 	
 	public Casilla(int fila, int columna, TipoDeCelda tipo) {
 		super();

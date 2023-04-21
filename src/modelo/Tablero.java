@@ -51,23 +51,61 @@ public class Tablero {
 	}
 	public Casilla[][] colocarBarcos(ArrayList<Barco> flota, Casilla[][] tablero) {
 		for (Barco barco : flota) {
-			while(barco.colocado==false) {
+			while(!barco.colocado) {
 				barco.orientacion=orientacionAleatoria();
 				if (barco.orientacion == Barco.Orientacion.VERTICAL) {
 					Random columna = new Random();
 					barco.columna = columna.nextInt(0, columnas);
 					Random fila = new Random();
 					barco.fila = fila.nextInt(0, filas - barco.numeroCasillas);
-					tablero[barco.fila][barco.columna]=new Casilla(barco.fila, barco.columna, Casilla.TipoDeCelda.BARCO);
-					barco.colocado=true;
+					// no checks for size
+					
+					System.out.println("Trying position " + barco.fila + " " + barco.columna + "ship " + barco.nombre);
+					
+					boolean spaceFree = true;
+					for (int i=0; i<barco.numeroCasillas; i++) {
+						if (tablero[barco.fila+i][barco.columna] == null) {
+							spaceFree = false;
+						}
+						if (tablero[barco.fila+i][barco.columna].tipo == Casilla.TipoDeCelda.BARCO) {
+							spaceFree = false;
+							break;
+						}
+					}
+					if (spaceFree) {
+						for (int i=0; i<barco.numeroCasillas; i++) {
+							tablero[barco.fila+i][barco.columna]=new Casilla(barco.fila+i, barco.columna, Casilla.TipoDeCelda.BARCO);
+							tablero[barco.fila+i][barco.columna].barco = barco;
+						}
+					
+						barco.colocado=true;
+					}
 				}
 				if (barco.orientacion == Barco.Orientacion.HORIZONTAL) {
 					Random columna = new Random();
 					barco.columna = columna.nextInt(0, columnas - barco.numeroCasillas);
 					Random fila = new Random();
 					barco.fila = fila.nextInt(0, filas);
-					tablero[barco.fila][barco.columna]=new Casilla(barco.fila, barco.columna, Casilla.TipoDeCelda.BARCO);
-					barco.colocado=true;
+					
+					boolean spaceFree = true;
+					for (int i=0; i<barco.numeroCasillas; i++) {
+						if (tablero[barco.fila][barco.columna+i] == null) {
+							spaceFree = false;
+						}
+						if (tablero[barco.fila][barco.columna+i].tipo == Casilla.TipoDeCelda.BARCO) {
+							spaceFree = false;
+							break;
+						}
+					}
+					if (spaceFree) {
+
+						for (int i=0; i<barco.numeroCasillas; i++) {
+							tablero[barco.fila][barco.columna+i]=new Casilla(barco.fila, barco.columna+i, Casilla.TipoDeCelda.BARCO);
+							tablero[barco.fila][barco.columna+i].barco = barco;
+						}
+						
+						barco.colocado=true;
+					}
 				}
 			}
 		}
@@ -99,6 +137,11 @@ public class Tablero {
 					StdDraw.square(100 + Constants.MEDIDA_CASILLA * j, 
 							             650 - Constants.MEDIDA_CASILLA * i, 
 							             Constants.MEDIDA_CASILLA / 2);
+					
+					if (tableroAliado[i][j].barco != null) {
+						StdDraw.text(100 + Constants.MEDIDA_CASILLA * j, 
+							             650 - Constants.MEDIDA_CASILLA * i, "" + tableroAliado[i][j].barco.numeroCasillas);
+					}
 				} else {
 					StdDraw.setPenColor(Color.BLACK);
 					StdDraw.square(100 + Constants.MEDIDA_CASILLA * j, 
