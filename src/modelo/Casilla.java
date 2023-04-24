@@ -11,6 +11,7 @@ public class Casilla {
 		BARCO
 	}
 	public TipoDeCelda tipo;
+	public Barco barco;
 	public EstadoDeLasCasillasDelBarco estadoCasillaBarco;
 	
 	public Casilla(int fila, int columna, TipoDeCelda tipo) {
