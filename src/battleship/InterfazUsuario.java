@@ -10,6 +10,8 @@ public class InterfazUsuario {
 		StdDraw.setCanvasSize(Constants.ANCHO_PANTALLA, Constants.ALTO_PANTALLA);
 		StdDraw.setXscale(0, Constants.ANCHO_PANTALLA);
 		StdDraw.setYscale(0, Constants.ALTO_PANTALLA);
+		StdDraw.setTitle("Battleship");
+		StdDraw.setPenRadius(Constants.GROSOR_POR_DEFECTO);
 		
 		MenuPrincipal menu = new MenuPrincipal();
 		menu.mostrarMenu();

@@ -145,6 +145,11 @@ public class Tablero {
 		return tablero;
 	}
 	
+	public Casilla[][] generarTableroVacio() {
+		Casilla[][] tableroVacio = crearTablero();
+		return tableroVacio;
+	}
+	
 	public Casilla[][] generarTableroAliado() {
 		Casilla[][] tableroAliado = crearTablero();
 		tableroAliado = colocarFlota(crearFlotaAliada(), tableroAliado);

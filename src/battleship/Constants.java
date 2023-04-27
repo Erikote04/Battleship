@@ -16,4 +16,7 @@ public class Constants {
 	public static final int COORDENADA_Y_CONSOLA = 80;
 	public static final int ANCHO_CONSOLA = 645;
 	public static final int ALTO_CONSOLA = 70;
+	
+	public static final double GROSOR_POR_DEFECTO = 0.001;
+	public static final double GROSOR_DISPARO = 0.01;
 }
