@@ -40,6 +40,11 @@ public class Juego {
 			if (StdDraw.isKeyPressed(KeyEvent.VK_SPACE)) {
 				disparo = system.disparoCPU(tableroAliado);
 				resaltarCasilla(disparo.fila, disparo.columna);
+				if (system.comprobarDisparo(disparo, tableroAliado)) {
+					System.out.println("tocado");
+				} else {
+					System.out.println("agua");
+				}
 			}
 			
 			StdDraw.show();
