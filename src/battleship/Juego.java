@@ -11,6 +11,7 @@ import utilidades.StdDraw;
 public class Juego {
 	
 	public void gameLoop() {
+		Integer filaRaton, columnaRaton;
 		boolean mostrarTableroEnemigo = false;
 		Disparo disparo = new Disparo();
 		Systems system = new Systems();
@@ -39,12 +40,19 @@ public class Juego {
 			}
 			if (StdDraw.isKeyPressed(KeyEvent.VK_SPACE)) {
 				disparo = system.disparoCPU(tableroAliado);
-				resaltarCasilla(disparo.fila, disparo.columna);
+				resaltarCasillaTableroAliado(disparo.fila, disparo.columna);
 				if (system.comprobarDisparo(disparo, tableroAliado)) {
 					System.out.println("tocado");
 				} else {
 					System.out.println("agua");
 				}
+			}
+			filaRaton = system.detectarFila();
+			columnaRaton = system.detectarColumna();
+			if (filaRaton == null || columnaRaton == null) {
+				System.out.println("fuera de tablero");
+			} else {
+				resaltarCasillaTableroEnemigo(filaRaton, columnaRaton);;
 			}
 			
 			StdDraw.show();
@@ -52,12 +60,21 @@ public class Juego {
 		}
 	}
 	
-	public void resaltarCasilla(Integer fila, Integer columna) {
+	public void resaltarCasillaTableroAliado(Integer fila, Integer columna) {
 		StdDraw.setPenColor(Color.YELLOW);
 		StdDraw.setPenRadius(Constants.GROSOR_DISPARO);
 		StdDraw.square(100 + Constants.MEDIDA_CASILLA * columna, 
 				       650 - Constants.MEDIDA_CASILLA * fila, 
 				       Constants.MEDIDA_CASILLA / 2);
+		StdDraw.setPenRadius(Constants.GROSOR_POR_DEFECTO);
+	}
+	
+	public void resaltarCasillaTableroEnemigo(Integer fila, Integer columna) {
+		StdDraw.setPenColor(Color.YELLOW);
+		StdDraw.setPenRadius(Constants.GROSOR_DISPARO);
+		StdDraw.square(Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * columna, 
+		               650 - Constants.MEDIDA_CASILLA * fila, 
+		               Constants.MEDIDA_CASILLA / 2);
 		StdDraw.setPenRadius(Constants.GROSOR_POR_DEFECTO);
 	}
 }

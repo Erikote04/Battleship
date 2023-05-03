@@ -193,7 +193,7 @@ public class Tablero {
 	}
 	
 	public void escribirNombreTableroAliado() {
-		StdDraw.text(Constants.COORDENADA_CENTRAL_X_TABLERO_IZQUIERDO, 
+		StdDraw.text(Constants.COORDENADA_CENTRAL_X_TABLERO_ALIADO, 
 				     Constants.COORDENADA_Y_PARA_NOMBRE_TABLEROS, 
 				     "FLOTA ALIADA");
 	}
@@ -251,7 +251,7 @@ public class Tablero {
 	}
 	
 	public void escribirNombreTableroEnemigo() {
-		StdDraw.text(Constants.COORDENADA_CENTRAL_X_TABLERO_DERECHO, 
+		StdDraw.text(Constants.COORDENADA_CENTRAL_X_TABLERO_ENEMIGO, 
 				     Constants.COORDENADA_Y_PARA_NOMBRE_TABLEROS, 
 				     "FLOTA ENEMIGA");
 	}

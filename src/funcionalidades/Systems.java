@@ -26,26 +26,26 @@ public class Systems {
 	public Integer detectarColumna() {
 		double mouseX = StdDraw.mouseX();
 		double mouseY = StdDraw.mouseY();
-		if (mouseX < Constants.MITAD_ANCHO_PANTALLA + 170
-			|| mouseX > Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * 9
-			|| mouseY > 650
-			|| mouseY < 650 - Constants.MEDIDA_CASILLA * 9) {
+		if (mouseX < Constants.COORDENADA_LATERAL_IZQUIERDO_TABLERO_ENEMIGO
+			|| mouseX > Constants.COORDENADA_LATERAL_DERECHO_TABLERO_ENEMIGO
+			|| mouseY > Constants.COORDENADA_TOP_TABLERO_ENEMIGO
+			|| mouseY < Constants.COORDENADA_BOTTOM_TABLERO_ENEMIGO) {
 			return null;
 		}
-		double columna = (mouseX - (Constants.MITAD_ANCHO_PANTALLA + 170)) / Constants.MEDIDA_CASILLA;
+		double columna = (mouseX - Constants.COORDENADA_LATERAL_IZQUIERDO_TABLERO_ENEMIGO) / Constants.MEDIDA_CASILLA;
 		return (int) columna;
 	}
 	
 	public Integer detectarFila() {
 		double mouseX = StdDraw.mouseX();
 		double mouseY = StdDraw.mouseY();
-		if (mouseX < Constants.MITAD_ANCHO_PANTALLA + 170
-			|| mouseX > Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * 9
-			|| mouseY > 650
-			|| mouseY < 650 - Constants.MEDIDA_CASILLA * 9) {
-			return null;
-		}
-		double fila = (mouseY - 650) / Constants.MEDIDA_CASILLA;
+		if (mouseX < Constants.COORDENADA_LATERAL_IZQUIERDO_TABLERO_ENEMIGO
+				|| mouseX > Constants.COORDENADA_LATERAL_DERECHO_TABLERO_ENEMIGO
+				|| mouseY > Constants.COORDENADA_TOP_TABLERO_ENEMIGO
+				|| mouseY < Constants.COORDENADA_BOTTOM_TABLERO_ENEMIGO) {
+				return null;
+			}
+		double fila = -((mouseY - Constants.COORDENADA_TOP_TABLERO_ENEMIGO) / Constants.MEDIDA_CASILLA);
 		return (int) fila;
 	}
 

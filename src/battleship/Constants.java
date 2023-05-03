@@ -8,8 +8,15 @@ public class Constants {
 	public static final int MITAD_ALTO_PANTALLA = ALTO_PANTALLA / 2; 
 	
 	public static final int MEDIDA_CASILLA = 50;
-	public static final int COORDENADA_CENTRAL_X_TABLERO_IZQUIERDO = 325;
-	public static final int COORDENADA_CENTRAL_X_TABLERO_DERECHO = 1115;
+	
+	public static final int COORDENADA_CENTRAL_X_TABLERO_ALIADO = 325;
+	
+	public static final int COORDENADA_CENTRAL_X_TABLERO_ENEMIGO = 1115;
+	public static final int COORDENADA_LATERAL_IZQUIERDO_TABLERO_ENEMIGO = 865;
+	public static final int COORDENADA_LATERAL_DERECHO_TABLERO_ENEMIGO = 1365;
+	public static final int COORDENADA_TOP_TABLERO_ENEMIGO = 675;
+	public static final int COORDENADA_BOTTOM_TABLERO_ENEMIGO = 175;
+	
 	public static final int COORDENADA_Y_PARA_LETRAS = 690;
 	public static final int COORDENADA_Y_PARA_NOMBRE_TABLEROS = 725;
 	
