@@ -20,7 +20,7 @@ public class Barco {
 		OK,
 		TOCADO
 	}
-	public EstadoDeLasCasillasDelBarco estadoDeLasCasillasDelBarco;
+	public EstadoDeLasCasillasDelBarco[] estadoDeLasPartesDelBarco;
 	public enum EstadoDelBarco {
 		OK,
 		TOCADO,
@@ -38,5 +38,6 @@ public class Barco {
 		this.numeroCasillas = numeroCasillas;
 		this.color = color;
 		this.colocado = colocado;
+		this.estadoDeLasPartesDelBarco = new EstadoDeLasCasillasDelBarco[numeroCasillas];
 	}		
 }

@@ -1,6 +1,8 @@
 package funcionalidades;
 
+
 import java.util.Random;
+import java.util.Set;
 import battleship.Constants;
 import modelo.Barco;
 import modelo.Casilla;
@@ -9,15 +11,20 @@ import utilidades.StdDraw;
 
 public class Systems {
 	
-	public Disparo disparoCPU(Casilla[][] tablero) {
+	public Disparo disparoCPU(Casilla[][] tablero, Set<Disparo> coordenadas) {
 		Random fila = new Random();
 		Random columna = new Random();
-		return new Disparo(fila.nextInt(0, tablero.length),columna.nextInt(0, tablero[0].length));
+		Disparo disparo = new Disparo(fila.nextInt(0, tablero.length),columna.nextInt(0, tablero[0].length));
+		while (!coordenadas.add(disparo)) {
+			disparo = new Disparo(fila.nextInt(0, tablero.length),columna.nextInt(0, tablero[0].length));
+		}
+		return disparo;
 	}
 	
 	public boolean comprobarDisparo(Disparo disparo, Casilla[][] tablero) {
-		if (tablero[disparo.fila][disparo.columna].tipo == Casilla.TipoDeCelda.BARCO) {
-			tablero[disparo.fila][disparo.columna].estadoCasillaBarco = Barco.EstadoDeLasCasillasDelBarco.TOCADO;
+		Casilla casilla = tablero[disparo.fila][disparo.columna];
+		if (casilla.tipo == Casilla.TipoDeCelda.BARCO) {
+			casilla.barco.estadoDeLasPartesDelBarco[casilla.indiceParteBarco] = Barco.EstadoDeLasCasillasDelBarco.TOCADO;
 			return true;
 		}
 		return false;

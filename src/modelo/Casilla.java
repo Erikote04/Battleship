@@ -1,7 +1,5 @@
 package modelo;
 
-import modelo.Barco.EstadoDeLasCasillasDelBarco;
-
 public class Casilla {
 	public int columna;
 	public int fila;
@@ -12,7 +10,7 @@ public class Casilla {
 	}
 	public TipoDeCelda tipo;
 	public Barco barco;
-	public EstadoDeLasCasillasDelBarco estadoCasillaBarco;
+	public int indiceParteBarco;
 	
 	public Casilla(int fila, int columna, TipoDeCelda tipo) {
 		super();

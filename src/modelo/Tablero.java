@@ -3,7 +3,7 @@ package modelo;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
-import battleship.Constants;
+import funcionalidades.Pantalla;
 import utilidades.StdDraw;
 
 public class Tablero {
@@ -20,7 +20,7 @@ public class Tablero {
 		Casilla[][] tablero = new Casilla[filas][columnas];
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
-				tablero[i][j] = new Casilla(i, j, Casilla.TipoDeCelda.AGUA);
+				tablero[i][j] = new Casilla(i, j, Casilla.TipoDeCelda.NIEBLA);
 			}
 		}
 		return tablero;
@@ -83,7 +83,20 @@ public class Tablero {
 	}
 	
 	public boolean comprobarCasillasVerticales(Barco barco, Casilla[][] tablero) {
-		for (int i = 0; i < barco.numeroCasillas; i++) {
+		if (barco.columna > 0) {
+			for (int i = 0; i < barco.numeroCasillas; i++) {
+				if (tablero[barco.fila + i][barco.columna - 1] == null) {
+					return false;
+				}
+				if (tablero[barco.fila + i][barco.columna - 1].tipo == Casilla.TipoDeCelda.BARCO) {
+					return false;
+				}
+			}
+		}
+		for (int i = -1; i < barco.numeroCasillas + 2; i++) {
+			if (barco.fila + i < 0 || barco.fila + i > 9) {
+				continue;
+			}
 			if (tablero[barco.fila + i][barco.columna] == null) {
 				return false;
 			}
@@ -91,11 +104,34 @@ public class Tablero {
 				return false;
 			}
 		}
+		if (barco.columna < 9) {
+			for (int i = 0; i < barco.numeroCasillas; i++) {
+				if (tablero[barco.fila + i][barco.columna + 1] == null) {
+					return false;
+				}
+				if (tablero[barco.fila + i][barco.columna + 1].tipo == Casilla.TipoDeCelda.BARCO) {
+					return false;
+				}
+			}
+		}
 		return true;
 	} 
 	
 	public boolean comprobarCasillasHorizontales(Barco barco, Casilla[][] tablero) {
-		for (int i = 0; i < barco.numeroCasillas; i++) {
+		if (barco.fila > 0) {
+			for (int i = 0; i < barco.numeroCasillas; i++) {
+				if (tablero[barco.fila - 1][barco.columna + i] == null) {
+					return false;
+				}
+				if (tablero[barco.fila - 1][barco.columna + i].tipo == Casilla.TipoDeCelda.BARCO) {
+					return false;
+				}
+			}
+		}
+		for (int i = -1; i < barco.numeroCasillas + 2; i++) {
+			if (barco.columna + i < 0 || barco.columna + i > 9) {
+				continue;
+			}
 			if (tablero[barco.fila][barco.columna + i] == null) {
 				return false;
 			}
@@ -103,21 +139,35 @@ public class Tablero {
 				return false;
 			}
 		}
+		if (barco.fila < 9) {
+			for (int i = 0; i < barco.numeroCasillas; i++) {
+				if (tablero[barco.fila + 1][barco.columna + i] == null) {
+					return false;
+				}
+				if (tablero[barco.fila + 1][barco.columna + i].tipo == Casilla.TipoDeCelda.BARCO) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 	
 	public Barco colocarBarcoVertical(Barco barco, Casilla[][] tablero) {
 		for (int i = 0; i < barco.numeroCasillas; i++) {
-			tablero[barco.fila + i][barco.columna].tipo = Casilla.TipoDeCelda.BARCO;
-			tablero[barco.fila + i][barco.columna].barco = barco;
+			Casilla c = tablero[barco.fila + i][barco.columna];
+			c.tipo = Casilla.TipoDeCelda.BARCO;
+			c.barco = barco;
+			c.indiceParteBarco = i;
 		}
 		return barco;
 	}
 	
 	public Barco colocarBarcoHorizontal(Barco barco, Casilla[][] tablero) {
 		for (int i = 0; i < barco.numeroCasillas; i++) {
-			tablero[barco.fila][barco.columna + i].tipo = Casilla.TipoDeCelda.BARCO;
-			tablero[barco.fila][barco.columna + i].barco = barco;
+			Casilla c = tablero[barco.fila][barco.columna + i];
+			c.tipo = Casilla.TipoDeCelda.BARCO;
+			c.barco = barco;
+			c.indiceParteBarco = i;
 		}
 		return barco;
 	}
@@ -161,99 +211,33 @@ public class Tablero {
 		tableroEnemigo = colocarFlota(crearFlotaEnemiga(), tableroEnemigo);
 		return tableroEnemigo;
 	}
-	
-	public void pintarBarcoAliado(Casilla[][] tablero, int fila, int columna) {
-		StdDraw.setPenColor(tablero[fila][columna].barco.color);
-		StdDraw.filledSquare(100 + Constants.MEDIDA_CASILLA * columna, 
-				             650 - Constants.MEDIDA_CASILLA * fila, 
-				             Constants.MEDIDA_CASILLA / 2);
-		StdDraw.setPenColor(Color.BLACK);
-		StdDraw.square(100 + Constants.MEDIDA_CASILLA * columna, 
-				       650 - Constants.MEDIDA_CASILLA * fila, 
-				       Constants.MEDIDA_CASILLA / 2);
-	}
-	
-	public void pintarCasillaTableroAliado(int fila, int columna) {
-		StdDraw.setPenColor(Color.BLACK);
-		StdDraw.square(100 + Constants.MEDIDA_CASILLA * columna, 
-					   650 - Constants.MEDIDA_CASILLA * fila, 
-					   Constants.MEDIDA_CASILLA / 2);
-	}
-	
-	public void pintarNumerosTableroAliado(int fila, int columna) {
-		StdDraw.text(50 + Constants.MEDIDA_CASILLA * columna, 
-				     650 - Constants.MEDIDA_CASILLA * fila, 
-				     String.valueOf(fila + 1));
-	}
-	
-	public void pintarLetrasTableroAliado(int fila, int columna, char ascii) {
-		StdDraw.text(100 + Constants.MEDIDA_CASILLA * columna, 
-				     Constants.COORDENADA_Y_PARA_LETRAS - Constants.MEDIDA_CASILLA * fila, 
-				     "" + ascii);
-	}
-	
-	public void escribirNombreTableroAliado() {
-		StdDraw.text(Constants.COORDENADA_CENTRAL_X_TABLERO_ALIADO, 
-				     Constants.COORDENADA_Y_PARA_NOMBRE_TABLEROS, 
-				     "FLOTA ALIADA");
-	}
 
 	public void pintarTableroAliado(Casilla[][] tableroAliado) {
 		char ascii = 65;
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
 				if (tableroAliado[i][j].tipo == Casilla.TipoDeCelda.BARCO) {
-					pintarBarcoAliado(tableroAliado, i, j);
+					Pantalla.pintarBarcoAliado(tableroAliado, i, j);
+					if (tableroAliado[i][j].barco.estadoDeLasPartesDelBarco[tableroAliado[i][j].indiceParteBarco] == Barco.EstadoDeLasCasillasDelBarco.TOCADO) {
+						Pantalla.pintarCasillaTocadoAliado(tableroAliado, i, j);
+					}
 				} else {
-					pintarCasillaTableroAliado(i, j);
+					Pantalla.pintarCasillaTableroAliado(i, j);
+					if (tableroAliado[i][j].tipo == Casilla.TipoDeCelda.AGUA) {
+						Pantalla.pintarCasillaAguaAliado(i, j);;
+					}
 				}
 				StdDraw.setPenColor(Color.BLACK);
 				if (j==0) { 
-					pintarNumerosTableroAliado(i, j);
+					Pantalla.pintarNumerosTableroAliado(i, j);
 				}
 				if (i==0) { 
-					pintarLetrasTableroAliado(i, j, ascii);
+					Pantalla.pintarLetrasTableroAliado(i, j, ascii);
 					ascii++;
 				}			
 			}
 		}
-		escribirNombreTableroAliado();
-	}
-	
-	public void pintarBarcoEnemigo(Casilla[][] tablero, int fila, int columna) {
-		StdDraw.setPenColor(tablero[fila][columna].barco.color);
-		StdDraw.filledSquare(Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * columna, 
-		                     650 - Constants.MEDIDA_CASILLA * fila, 
-		                     Constants.MEDIDA_CASILLA / 2);
-		StdDraw.setPenColor(Color.BLACK);
-		StdDraw.square(Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * columna, 
-                       650 - Constants.MEDIDA_CASILLA * fila, 
-                       Constants.MEDIDA_CASILLA / 2);
-	}
-	
-	public void pintarCasillaTableroEnemigo(int fila, int columna) {
-		StdDraw.setPenColor(Color.BLACK);
-		StdDraw.square(Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * columna, 
-			           650 - Constants.MEDIDA_CASILLA * fila, 
-			           Constants.MEDIDA_CASILLA / 2);
-	}
-	
-	public void pintarNumerosTableroEnemigo(int fila, int columna) {
-		StdDraw.text(Constants.MITAD_ANCHO_PANTALLA + 120 + Constants.MEDIDA_CASILLA * columna, 
-			     650 - Constants.MEDIDA_CASILLA * fila, 
-			     String.valueOf(fila + 1));
-	}
-	
-	public void pintarLetrasTableroEnemigo(int fila, int columna, char ascii) {
-		StdDraw.text(Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * columna, 
-			         Constants.COORDENADA_Y_PARA_LETRAS - Constants.MEDIDA_CASILLA * fila, 
-			         "" + ascii);
-	}
-	
-	public void escribirNombreTableroEnemigo() {
-		StdDraw.text(Constants.COORDENADA_CENTRAL_X_TABLERO_ENEMIGO, 
-				     Constants.COORDENADA_Y_PARA_NOMBRE_TABLEROS, 
-				     "FLOTA ENEMIGA");
+		Pantalla.escribirNombreTableroAliado();
 	}
 	
 	public void pintarTableroEnemigo(Casilla[][] tableroEnemigo) {
@@ -261,20 +245,47 @@ public class Tablero {
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
 				if (tableroEnemigo[i][j].tipo == Casilla.TipoDeCelda.BARCO) {
-					pintarBarcoEnemigo(tableroEnemigo, i, j);
+					Pantalla.pintarBarcoEnemigo(tableroEnemigo, i, j);
 				} else {
-					pintarCasillaTableroEnemigo(i, j);
+					Pantalla.pintarCasillaTableroEnemigo(i, j);
 				}
 				StdDraw.setPenColor(Color.BLACK);
 				if (j==0) { 
-					pintarNumerosTableroEnemigo(i, j);
+					Pantalla.pintarNumerosTableroEnemigo(i, j);
 				}
 				if (i==0) { 
-					pintarLetrasTableroEnemigo(i, j, ascii);
+					Pantalla.pintarLetrasTableroEnemigo(i, j, ascii);
 					ascii++;
 				}			
 			}
 		}
-		escribirNombreTableroEnemigo();
+		Pantalla.escribirNombreTableroEnemigo();
+	}
+	
+	public void pintarTableroVacio(Casilla[][] tableroEnemigo) {
+		char ascii = 65;
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				Casilla casilla = tableroEnemigo[i][j];
+				if (casilla.tipo == Casilla.TipoDeCelda.BARCO) {
+					Pantalla.pintarCasillaTocadoEnemigo(tableroEnemigo, i, j);
+				}
+				if (casilla.tipo == Casilla.TipoDeCelda.AGUA){
+					Pantalla.pintarCasillaAguaEnemigo(i, j);
+				}
+				if (casilla.tipo == Casilla.TipoDeCelda.NIEBLA){
+					Pantalla.pintarCasillaTableroEnemigo(i, j);
+				}
+				StdDraw.setPenColor(Color.BLACK);
+				if (j==0) { 
+					Pantalla.pintarNumerosTableroEnemigo(i, j);
+				}
+				if (i==0) { 
+					Pantalla.pintarLetrasTableroEnemigo(i, j, ascii);
+					ascii++;
+				}			
+			}
+		}
+		Pantalla.escribirNombreTableroEnemigo();
 	}
 }

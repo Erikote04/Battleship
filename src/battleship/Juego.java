@@ -2,7 +2,11 @@ package battleship;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.util.HashSet;
+import java.util.Set;
+
 import funcionalidades.Systems;
+import modelo.Barco;
 import modelo.Casilla;
 import modelo.Disparo;
 import modelo.Tablero;
@@ -20,43 +24,61 @@ public class Juego {
 		Casilla[][] tableroVacio = tablero.generarTableroVacio();	
 		Casilla[][] tableroAliado = tablero.generarTableroAliado();	
 		Casilla[][] tableroEnemigo = tablero.generarTableroEnemigo();
+		Set <Disparo> coordenadas = new HashSet <Disparo>();
 		StdDraw.enableDoubleBuffering();
 		for(;;) {
 			StdDraw.clear();
 			
+			// Pintar tableros
 			consola.pintarConsola();
 			tablero.pintarTableroAliado(tableroAliado);
 			if (mostrarTableroEnemigo) {
 				tablero.pintarTableroEnemigo(tableroEnemigo);
 			} else {
-				tablero.pintarTableroEnemigo(tableroVacio);
-			}
-			
-			if (StdDraw.isKeyPressed(KeyEvent.VK_ESCAPE)) {
-				break;
+				tablero.pintarTableroVacio(tableroVacio);
 			}
 			if (StdDraw.isKeyPressed(KeyEvent.VK_M)) {
 				mostrarTableroEnemigo = !mostrarTableroEnemigo; 
 			}
+			
+			// Condición de salida
+			if (StdDraw.isKeyPressed(KeyEvent.VK_ESCAPE)) {
+				break;
+			}
+			
+			// Turno CPU
 			if (StdDraw.isKeyPressed(KeyEvent.VK_SPACE)) {
-				disparo = system.disparoCPU(tableroAliado);
+				disparo = system.disparoCPU(tableroAliado, coordenadas);
+				System.out.println(disparo.fila + disparo.columna);
 				resaltarCasillaTableroAliado(disparo.fila, disparo.columna);
 				if (system.comprobarDisparo(disparo, tableroAliado)) {
-					System.out.println("tocado");
+					tableroAliado[disparo.fila][disparo.columna].barco.estadoDeLasPartesDelBarco[tableroAliado[disparo.fila][disparo.columna].indiceParteBarco] = Barco.EstadoDeLasCasillasDelBarco.TOCADO;
+					//System.out.println("tocado");
 				} else {
-					System.out.println("agua");
+					tableroAliado[disparo.fila][disparo.columna].tipo = Casilla.TipoDeCelda.AGUA;
+					//System.out.println("agua");
 				}
 			}
+			
+			// Turno Humano
 			filaRaton = system.detectarFila();
 			columnaRaton = system.detectarColumna();
 			if (filaRaton == null || columnaRaton == null) {
-				System.out.println("fuera de tablero");
 			} else {
-				resaltarCasillaTableroEnemigo(filaRaton, columnaRaton);;
+				resaltarCasillaTableroEnemigo(filaRaton, columnaRaton);
+				if (StdDraw.isMousePressed()) {
+					Disparo miDisparo = new Disparo(filaRaton, columnaRaton);
+					if (system.comprobarDisparo(miDisparo, tableroEnemigo)) {
+						tableroVacio[miDisparo.fila][miDisparo.columna].tipo = Casilla.TipoDeCelda.BARCO;
+						tableroVacio[miDisparo.fila][miDisparo.columna].barco = tableroEnemigo[miDisparo.fila][miDisparo.columna].barco;
+					} else {
+						tableroVacio[miDisparo.fila][miDisparo.columna].tipo = Casilla.TipoDeCelda.AGUA;
+					}
+				}
 			}
-			
+			// Fotograma
 			StdDraw.show();
-			StdDraw.pause(10);
+			StdDraw.pause(100);
 		}
 	}
 	
