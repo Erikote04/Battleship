@@ -13,7 +13,6 @@ public class Pantalla {
 		StdDraw.text(100 + Constants.MEDIDA_CASILLA * columna, 
 	                 650 - Constants.MEDIDA_CASILLA * fila, 
 	                 "O");
-		//pintarBarcoAliado(tablero, fila, columna);
 	}
 	
 	public static void pintarCasillaAguaAliado(int fila, int columna) {
@@ -81,8 +80,8 @@ public class Pantalla {
 	
 	public static void pintarNumerosTableroEnemigo(int fila, int columna) {
 		StdDraw.text(Constants.MITAD_ANCHO_PANTALLA + 120 + Constants.MEDIDA_CASILLA * columna, 
-			     650 - Constants.MEDIDA_CASILLA * fila, 
-			     String.valueOf(fila + 1));
+			         650 - Constants.MEDIDA_CASILLA * fila, 
+			         String.valueOf(fila + 1));
 	}
 	
 	public static void pintarLetrasTableroEnemigo(int fila, int columna, char ascii) {
