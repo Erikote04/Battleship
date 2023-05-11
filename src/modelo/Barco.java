@@ -39,5 +39,17 @@ public class Barco {
 		this.color = color;
 		this.colocado = colocado;
 		this.estadoDeLasPartesDelBarco = new EstadoDeLasCasillasDelBarco[numeroCasillas];
-	}		
+		for (int i = 0; i < estadoDeLasPartesDelBarco.length; i++) {
+			estadoDeLasPartesDelBarco[i] = Barco.EstadoDeLasCasillasDelBarco.OK;
+		}
+	}	
+	
+	public boolean estaHundido() {		
+		for (int i = 0; i < estadoDeLasPartesDelBarco.length; i++) {
+			if (estadoDeLasPartesDelBarco[i] == Barco.EstadoDeLasCasillasDelBarco.OK) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

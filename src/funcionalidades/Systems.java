@@ -26,6 +26,8 @@ public class Systems {
 		if (casilla.tipo == Casilla.TipoDeCelda.BARCO) {
 			casilla.barco.estadoDeLasPartesDelBarco[casilla.indiceParteBarco] = Barco.EstadoDeLasCasillasDelBarco.TOCADO;
 			return true;
+		} else {
+			casilla.tipo = Casilla.TipoDeCelda.AGUA;
 		}
 		return false;
 	}

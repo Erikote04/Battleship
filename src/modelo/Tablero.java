@@ -9,6 +9,9 @@ import utilidades.StdDraw;
 public class Tablero {
 	public int filas;
 	public int columnas;
+	private ArrayList<Barco> flotaAliada;
+	private ArrayList<Barco> flotaEnemiga;
+	
 
 	public Tablero(int filas, int columnas) {
 		super();
@@ -16,6 +19,22 @@ public class Tablero {
 		this.columnas = columnas;
 	}
 	
+	public ArrayList<Barco> getFlotaAliada() {
+		return flotaAliada;
+	}
+
+	public void setFlotaAliada(ArrayList<Barco> flotaAliada) {
+		this.flotaAliada = flotaAliada;
+	}
+
+	public ArrayList<Barco> getFlotaEnemiga() {
+		return flotaEnemiga;
+	}
+
+	public void setFlotaEnemiga(ArrayList<Barco> flotaEnemiga) {
+		this.flotaEnemiga = flotaEnemiga;
+	}
+
 	public Casilla[][] crearTablero() {
 		Casilla[][] tablero = new Casilla[filas][columnas];
 		for (int i = 0; i < filas; i++) {
@@ -45,15 +64,27 @@ public class Tablero {
 		ArrayList<Barco> flota = new ArrayList<Barco>();
 		flota.add(0, new Barco("Portaaviones", 4, Color.GREEN, false));
 		flota.add(1, new Barco("Acorazado1", 3, Color.BLUE, false));
-		flota.add(2, new Barco("Acorazado2", 3, Color.BLUE, false));
-		flota.add(3, new Barco("Destructor1", 2, Color.GRAY, false));
-		flota.add(4, new Barco("Destructor2", 2, Color.GRAY, false));
-		flota.add(5, new Barco("Destructor3", 2, Color.GRAY, false));
-		flota.add(6, new Barco("Submarino1", 1, Color.MAGENTA, false));
-		flota.add(7, new Barco("Submarino2", 1, Color.MAGENTA, false));
-		flota.add(8, new Barco("Submarino3", 1, Color.MAGENTA, false));
-		flota.add(9, new Barco("Submarino4", 1, Color.MAGENTA, false));
+//		flota.add(2, new Barco("Acorazado2", 3, Color.BLUE, false));
+//		flota.add(3, new Barco("Destructor1", 2, Color.GRAY, false));
+//		flota.add(4, new Barco("Destructor2", 2, Color.GRAY, false));
+//		flota.add(5, new Barco("Destructor3", 2, Color.GRAY, false));
+//		flota.add(6, new Barco("Submarino1", 1, Color.MAGENTA, false));
+//		flota.add(7, new Barco("Submarino2", 1, Color.MAGENTA, false));
+//		flota.add(8, new Barco("Submarino3", 1, Color.MAGENTA, false));
+//		flota.add(9, new Barco("Submarino4", 1, Color.MAGENTA, false));
 		return flota;
+	}
+	
+	public boolean estaFlotaHundida(ArrayList<Barco> flota) {
+		if (flota == null) {
+			return false;
+		}
+		for (Barco barco : flota) {
+			if (!barco.estaHundido()) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public Barco.Orientacion orientacionAleatoria() {
@@ -202,13 +233,15 @@ public class Tablero {
 	
 	public Casilla[][] generarTableroAliado() {
 		Casilla[][] tableroAliado = crearTablero();
-		tableroAliado = colocarFlota(crearFlotaAliada(), tableroAliado);
+		flotaAliada = crearFlotaAliada();
+		tableroAliado = colocarFlota(flotaAliada, tableroAliado);
 		return tableroAliado;
 	}
 	
 	public Casilla[][] generarTableroEnemigo() {
 		Casilla[][] tableroEnemigo = crearTablero();
-		tableroEnemigo = colocarFlota(crearFlotaEnemiga(), tableroEnemigo);
+		flotaEnemiga = crearFlotaEnemiga();
+		tableroEnemigo = colocarFlota(flotaEnemiga, tableroEnemigo);
 		return tableroEnemigo;
 	}
 
@@ -268,6 +301,9 @@ public class Tablero {
 			for (int j = 0; j < columnas; j++) {
 				Casilla casilla = tableroEnemigo[i][j];
 				if (casilla.tipo == Casilla.TipoDeCelda.BARCO) {
+					if (casilla.barco.estaHundido()) {
+						Pantalla.pintarBarcoEnemigo(tableroEnemigo, i, j);
+					} 
 					Pantalla.pintarCasillaTocadoEnemigo(tableroEnemigo, i, j);
 				}
 				if (casilla.tipo == Casilla.TipoDeCelda.AGUA){

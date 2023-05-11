@@ -13,10 +13,19 @@ import modelo.Tablero;
 import utilidades.StdDraw;
 
 public class Juego {
+	private long tiempoInicio;
+	
+	public Juego() {
+		super();
+		this.tiempoInicio = System.currentTimeMillis();
+	}
 	
 	public void gameLoop() {
 		Integer filaRaton, columnaRaton, turno = 1;
 		boolean mostrarTableroEnemigo = false;
+		boolean finDePartida = false;
+		boolean ultimoDisparoEsTocado = false;
+		boolean esPrimerTurno = true;
 		Disparo disparo = new Disparo();
 		Systems system = new Systems();
 		Console consola = new Console();
@@ -26,7 +35,7 @@ public class Juego {
 		Casilla[][] tableroEnemigo = tablero.generarTableroEnemigo();
 		Set <Disparo> coordenadas = new HashSet <Disparo>();
 		StdDraw.enableDoubleBuffering();
-		for(;;) {
+		do {
 			StdDraw.clear();
 			
 			// Pintar tableros
@@ -53,18 +62,18 @@ public class Juego {
 				if (filaRaton == null || columnaRaton == null) {
 				} else {
 					resaltarCasillaTableroEnemigo(filaRaton, columnaRaton);
-					if (StdDraw.isMousePressed()) {
+					if (StdDraw.isMousePressed() && tableroVacio[filaRaton][columnaRaton].tipo == Casilla.TipoDeCelda.NIEBLA) {
+						esPrimerTurno = false;
 						Disparo miDisparo = new Disparo(filaRaton, columnaRaton);
 						if (system.comprobarDisparo(miDisparo, tableroEnemigo)) {
 							tableroVacio[miDisparo.fila][miDisparo.columna].tipo = Casilla.TipoDeCelda.BARCO;
 							tableroVacio[miDisparo.fila][miDisparo.columna].barco = tableroEnemigo[miDisparo.fila][miDisparo.columna].barco;
-							consola.mensajeUltimoDisparoTocado();
-							turno = 2;
+							ultimoDisparoEsTocado = true;
 						} else {
 							tableroVacio[miDisparo.fila][miDisparo.columna].tipo = Casilla.TipoDeCelda.AGUA;
-							consola.mensajeUltimoDisparoAgua();
-							turno = 2;
+							ultimoDisparoEsTocado = false;
 						}
+						turno = 2;
 					}
 				}
 			} else if (turno == 2) { // Turno CPU
@@ -74,20 +83,38 @@ public class Juego {
 					resaltarCasillaTableroAliado(disparo.fila, disparo.columna);
 					if (system.comprobarDisparo(disparo, tableroAliado)) {
 						tableroAliado[disparo.fila][disparo.columna].barco.estadoDeLasPartesDelBarco[tableroAliado[disparo.fila][disparo.columna].indiceParteBarco] = Barco.EstadoDeLasCasillasDelBarco.TOCADO;
-						consola.mensajeUltimoDisparoTocado();
-						turno = 1;
+						ultimoDisparoEsTocado = true;
 					} else {
 						tableroAliado[disparo.fila][disparo.columna].tipo = Casilla.TipoDeCelda.AGUA;
-						consola.mensajeUltimoDisparoAgua();
-						turno = 1;
+						ultimoDisparoEsTocado = false;
 					}
+					turno = 1;
 				}
+			}
+			
+			// Mostrar mensajes disparos
+			if (!esPrimerTurno) {
+				if (ultimoDisparoEsTocado) {
+					consola.mensajeUltimoDisparoTocado();
+				} else {
+					consola.mensajeUltimoDisparoAgua();	
+				}
+			}
+	
+			// Comprobar jugada ganadora
+			if (tablero.estaFlotaHundida(tablero.getFlotaAliada())) {
+				consola.mensajeGanadorCPU(calcularDuracionPartida());
+				finDePartida = true;
+			}
+			if (tablero.estaFlotaHundida(tablero.getFlotaEnemiga())) {
+				consola.mensajeGanadorUsuario(calcularDuracionPartida());
+				finDePartida = true;
 			}
 
 			// Fotograma
 			StdDraw.show();
 			StdDraw.pause(100);
-		}
+		} while(!finDePartida);
 	}
 	
 	public void resaltarCasillaTableroAliado(Integer fila, Integer columna) {
@@ -106,5 +133,13 @@ public class Juego {
 		               650 - Constants.MEDIDA_CASILLA * fila, 
 		               Constants.MEDIDA_CASILLA / 2);
 		StdDraw.setPenRadius(Constants.GROSOR_POR_DEFECTO);
+	}
+	
+	public String calcularDuracionPartida() {
+		long tiempoMS = System.currentTimeMillis() - this.tiempoInicio;
+		int tiempoS = (int) tiempoMS/1000;
+		int minutos = tiempoS/60;
+		int segundos = tiempoS%60;
+		return "" + minutos + ":" + segundos;
 	}
 }

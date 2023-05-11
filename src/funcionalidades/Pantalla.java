@@ -10,9 +10,15 @@ public class Pantalla {
 	
 	public static void pintarCasillaTocadoAliado(Casilla[][] tablero, int fila, int columna) {
 		StdDraw.setPenColor(Color.RED);
-		StdDraw.text(100 + Constants.MEDIDA_CASILLA * columna, 
+		if (tablero[fila][columna].barco.estaHundido()) {
+			StdDraw.text(100 + Constants.MEDIDA_CASILLA * columna, 
+	                 650 - Constants.MEDIDA_CASILLA * fila, 
+	                 "X");
+		} else {
+			StdDraw.text(100 + Constants.MEDIDA_CASILLA * columna, 
 	                 650 - Constants.MEDIDA_CASILLA * fila, 
 	                 "O");
+		}
 	}
 	
 	public static void pintarCasillaAguaAliado(int fila, int columna) {
@@ -98,11 +104,17 @@ public class Pantalla {
 	
 	public static void pintarCasillaTocadoEnemigo(Casilla[][] tablero, int fila, int columna) {
 		Casilla casilla = tablero[fila][columna];
+		StdDraw.setPenColor(Color.RED);
 		if (casilla.barco.estadoDeLasPartesDelBarco[casilla.indiceParteBarco] == Barco.EstadoDeLasCasillasDelBarco.TOCADO) {
-			StdDraw.setPenColor(Color.RED);
-			StdDraw.text(Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * columna, 
-                         650 - Constants.MEDIDA_CASILLA * fila, 
-                         "O");
+			if (casilla.barco.estaHundido()) {
+				StdDraw.text(Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * columna, 
+	                    650 - Constants.MEDIDA_CASILLA * fila, 
+	                    "X");
+			} else {
+				StdDraw.text(Constants.MITAD_ANCHO_PANTALLA + 170 + Constants.MEDIDA_CASILLA * columna, 
+	                    650 - Constants.MEDIDA_CASILLA * fila, 
+	                    "O");
+			}
 		}
 		pintarCasillaTableroEnemigo(fila, columna);
 	}

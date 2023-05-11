@@ -44,13 +44,13 @@ public class Console {
 		StdDraw.text(Constants.MITAD_ANCHO_PANTALLA, 80, "Último disparo: ¡HUNDIDO!");
 	}
 	
-	public void mensajeGanadorUsuario() {
+	public void mensajeGanadorUsuario(String tiempoPartida) {
 		StdDraw.setPenColor(Color.RED);
-		StdDraw.text(Constants.MITAD_ANCHO_PANTALLA, 40, "!GANAS TÚ! Duración de la partida:");
+		StdDraw.text(Constants.MITAD_ANCHO_PANTALLA, 40, "!GANAS TÚ! Duración de la partida:" + tiempoPartida);
 	}
 	
-	public void mensajeGanadorCPU() {
+	public void mensajeGanadorCPU(String tiempoPartida) {
 		StdDraw.setPenColor(Color.RED);
-		StdDraw.text(Constants.MITAD_ANCHO_PANTALLA, 40, "!GANAS LA CPU! Duración de la partida:");
+		StdDraw.text(Constants.MITAD_ANCHO_PANTALLA, 40, "!GANAS LA CPU! Duración de la partida:" + tiempoPartida);
 	}
 }
