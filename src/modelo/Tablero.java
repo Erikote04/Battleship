@@ -64,14 +64,14 @@ public class Tablero {
 		ArrayList<Barco> flota = new ArrayList<Barco>();
 		flota.add(0, new Barco("Portaaviones", 4, Color.GREEN, false));
 		flota.add(1, new Barco("Acorazado1", 3, Color.BLUE, false));
-//		flota.add(2, new Barco("Acorazado2", 3, Color.BLUE, false));
-//		flota.add(3, new Barco("Destructor1", 2, Color.GRAY, false));
-//		flota.add(4, new Barco("Destructor2", 2, Color.GRAY, false));
-//		flota.add(5, new Barco("Destructor3", 2, Color.GRAY, false));
-//		flota.add(6, new Barco("Submarino1", 1, Color.MAGENTA, false));
-//		flota.add(7, new Barco("Submarino2", 1, Color.MAGENTA, false));
-//		flota.add(8, new Barco("Submarino3", 1, Color.MAGENTA, false));
-//		flota.add(9, new Barco("Submarino4", 1, Color.MAGENTA, false));
+		flota.add(2, new Barco("Acorazado2", 3, Color.BLUE, false));
+		flota.add(3, new Barco("Destructor1", 2, Color.GRAY, false));
+		flota.add(4, new Barco("Destructor2", 2, Color.GRAY, false));
+		flota.add(5, new Barco("Destructor3", 2, Color.GRAY, false));
+		flota.add(6, new Barco("Submarino1", 1, Color.MAGENTA, false));
+		flota.add(7, new Barco("Submarino2", 1, Color.MAGENTA, false));
+		flota.add(8, new Barco("Submarino3", 1, Color.MAGENTA, false));
+		flota.add(9, new Barco("Submarino4", 1, Color.MAGENTA, false));
 		return flota;
 	}
 	
