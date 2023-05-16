@@ -9,6 +9,7 @@ Each player starts with 10 ships on their board, which can be of different sizes
 - 2 ships of size 3
 - 3 ship of size 2
 - 4 ship of size 1
+
 The user and the CPU take turns shooting. Each time one of the players shoots, it will be indicated if the shot hit an opponent's ship or if it was a miss.
 The first player to sink all of their opponent's ships wins the game.
 
