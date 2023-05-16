@@ -25,6 +25,7 @@ public class Juego {
 		boolean mostrarTableroEnemigo = false;
 		boolean finDePartida = false;
 		boolean ultimoDisparoEsTocado = false;
+		boolean ultimoDisparoEsHundido = false;
 		boolean esPrimerTurno = true;
 		Disparo disparo = new Disparo();
 		Systems system = new Systems();
@@ -68,9 +69,16 @@ public class Juego {
 						if (system.comprobarDisparo(miDisparo, tableroEnemigo)) {
 							tableroVacio[miDisparo.fila][miDisparo.columna].tipo = Casilla.TipoDeCelda.BARCO;
 							tableroVacio[miDisparo.fila][miDisparo.columna].barco = tableroEnemigo[miDisparo.fila][miDisparo.columna].barco;
-							ultimoDisparoEsTocado = true;
+							if (tableroVacio[miDisparo.fila][miDisparo.columna].barco.estaHundido()) {
+								ultimoDisparoEsHundido = true;
+								ultimoDisparoEsTocado = false;
+							} else {
+								ultimoDisparoEsHundido = false;
+								ultimoDisparoEsTocado = true;
+							}
 						} else {
 							tableroVacio[miDisparo.fila][miDisparo.columna].tipo = Casilla.TipoDeCelda.AGUA;
+							ultimoDisparoEsHundido = false;
 							ultimoDisparoEsTocado = false;
 						}
 						turno = 2;
@@ -83,10 +91,17 @@ public class Juego {
 					resaltarCasillaTableroAliado(disparo.fila, disparo.columna);
 					if (system.comprobarDisparo(disparo, tableroAliado)) {
 						tableroAliado[disparo.fila][disparo.columna].barco.estadoDeLasPartesDelBarco[tableroAliado[disparo.fila][disparo.columna].indiceParteBarco] = Barco.EstadoDeLasCasillasDelBarco.TOCADO;
-						ultimoDisparoEsTocado = true;
+						if (tableroAliado[disparo.fila][disparo.columna].barco.estaHundido()) {
+							ultimoDisparoEsHundido = true;
+							ultimoDisparoEsTocado = false;
+						} else {
+							ultimoDisparoEsHundido = false;
+							ultimoDisparoEsTocado = true;
+						}	
 					} else {
 						tableroAliado[disparo.fila][disparo.columna].tipo = Casilla.TipoDeCelda.AGUA;
 						ultimoDisparoEsTocado = false;
+						ultimoDisparoEsHundido = false;
 					}
 					turno = 1;
 				}
@@ -96,17 +111,21 @@ public class Juego {
 			if (!esPrimerTurno) {
 				if (ultimoDisparoEsTocado) {
 					consola.mensajeUltimoDisparoTocado();
+				} else if (ultimoDisparoEsHundido){
+					consola.mensajeUltimoDisparoHundido();
 				} else {
-					consola.mensajeUltimoDisparoAgua();	
+					consola.mensajeUltimoDisparoAgua();
 				}
 			}
 	
 			// Comprobar jugada ganadora
 			if (tablero.estaFlotaHundida(tablero.getFlotaAliada())) {
+				tablero.pintarTableroEnemigo(tableroEnemigo);
 				consola.mensajeGanadorCPU(calcularDuracionPartida());
 				finDePartida = true;
 			}
 			if (tablero.estaFlotaHundida(tablero.getFlotaEnemiga())) {
+				tablero.pintarTableroEnemigo(tableroEnemigo);
 				consola.mensajeGanadorUsuario(calcularDuracionPartida());
 				finDePartida = true;
 			}
@@ -114,6 +133,7 @@ public class Juego {
 			// Fotograma
 			StdDraw.show();
 			StdDraw.pause(100);
+			
 		} while(!finDePartida);
 	}
 	
