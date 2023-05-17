@@ -121,11 +121,13 @@ public class Juego {
 			// Comprobar jugada ganadora
 			if (tablero.estaFlotaHundida(tablero.getFlotaAliada())) {
 				tablero.pintarTableroEnemigo(tableroEnemigo);
+				tablero.pintarTableroVacio(tableroVacio);
 				consola.mensajeGanadorCPU(calcularDuracionPartida());
 				finDePartida = true;
 			}
 			if (tablero.estaFlotaHundida(tablero.getFlotaEnemiga())) {
 				tablero.pintarTableroEnemigo(tableroEnemigo);
+				tablero.pintarTableroVacio(tableroVacio);
 				consola.mensajeGanadorUsuario(calcularDuracionPartida());
 				finDePartida = true;
 			}
